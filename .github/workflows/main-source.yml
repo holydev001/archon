@@ -1,0 +1,23 @@
+name: Main source policy
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  require-dev-source:
+    name: Require dev source
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify source branch
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if [ "$HEAD_REF" != "dev" ]; then
+            echo "Pull requests into main must originate from dev."
+            exit 1
+          fi
+
