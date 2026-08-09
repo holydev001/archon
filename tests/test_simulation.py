@@ -1,10 +1,9 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from archon.domain import Bar, OrderIntent, Side
 from archon.simulation import PaperBroker
 
-
-NOW = datetime(2026, 1, 1, tzinfo=timezone.utc)
+NOW = datetime(2026, 1, 1, tzinfo=UTC)
 
 
 def test_buy_take_profit_includes_slippage_and_commission() -> None:
