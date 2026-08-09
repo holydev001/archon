@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from archon.domain import Bar, Side
 from archon.strategy import MovingAverageConfig, MovingAverageCrossStrategy
@@ -7,7 +7,7 @@ from archon.strategy import MovingAverageConfig, MovingAverageCrossStrategy
 def bar(index: int, close: float) -> Bar:
     return Bar(
         symbol="EURUSD",
-        timestamp=datetime(2026, 1, 1, tzinfo=timezone.utc) + timedelta(minutes=index),
+        timestamp=datetime(2026, 1, 1, tzinfo=UTC) + timedelta(minutes=index),
         open=close,
         high=close + 0.0001,
         low=close - 0.0001,

@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from archon.domain import OrderIntent, Side
 from archon.risk import AccountState, RiskGate, RiskLimits
@@ -12,7 +12,7 @@ def make_order(quantity: float = 1_000.0) -> OrderIntent:
         entry_price=1.1000,
         stop_loss=1.0990,
         take_profit=1.1020,
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
     )
 
 
