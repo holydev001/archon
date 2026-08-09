@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "archon-scalper"
+version = "0.1.0"
+description = "Demo-first, broker-independent Forex scalping research engine"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+mt5 = ["MetaTrader5>=5.0.45"]
+
+[project.scripts]
+archon = "archon.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/archon"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
