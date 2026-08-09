@@ -4,9 +4,12 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 .venv/
+temp_auto_push.bat
 venv/
 .env
 data/
 logs/
 artifacts/
 
+.gitignore
+branch_structure.json
