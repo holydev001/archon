@@ -5,6 +5,7 @@ from pathlib import Path
 from archon.backtest import Backtester
 from archon.config import load_config
 from archon.datasets import chronological_split, load_bars_csv
+from archon.synthetic import write_synthetic_csv
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -21,6 +22,10 @@ def build_parser() -> argparse.ArgumentParser:
         type=float,
         help="chronologically split data and report train/test periods separately",
     )
+    sample = subparsers.add_parser("generate-sample", help="create synthetic engineering data")
+    sample.add_argument("output")
+    sample.add_argument("--bars", type=int, default=500)
+    sample.add_argument("--seed", type=int, default=42)
     return parser
 
 
@@ -30,6 +35,9 @@ def main(argv: list[str] | None = None) -> int:
         print("Archon runtime: OK")
     elif args.command == "backtest":
         _run_backtest(args)
+    elif args.command == "generate-sample":
+        write_synthetic_csv(args.output, bars_per_symbol=args.bars, seed=args.seed)
+        print(f"Synthetic engineering data written to {args.output}")
     return 0
 
 
