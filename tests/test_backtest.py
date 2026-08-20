@@ -57,3 +57,15 @@ def test_calculates_drawdown_and_trade_statistics() -> None:
     assert metrics.profit_factor == 2
     assert metrics.max_drawdown == 150
     assert metrics.max_drawdown_fraction == pytest.approx(150 / 1_100)
+
+
+def test_writes_machine_readable_reports(tmp_path) -> None:
+    config = BotConfig(
+        symbols=("EURUSD",), slippage=0,
+        strategy=MovingAverageConfig(2, 4, 0.00001),
+    )
+    result = Backtester(config).run(make_bars([1.004, 1.003, 1.002, 1.001, 1.006]))
+    result.write_json(tmp_path / "result.json")
+    result.write_trades_csv(tmp_path / "trades.csv")
+    assert '"total_trades": 1' in (tmp_path / "result.json").read_text()
+    assert "exit_reason" in (tmp_path / "trades.csv").read_text()
