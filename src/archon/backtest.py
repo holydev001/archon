@@ -1,3 +1,4 @@
+import csv
 import json
 from collections.abc import Iterable
 from dataclasses import asdict, dataclass
@@ -49,6 +50,19 @@ class BacktestResult:
 
     def write_json(self, path: str | Path) -> None:
         Path(path).write_text(json.dumps(self.to_dict(), indent=2), encoding="utf-8")
+
+    def write_trades_csv(self, path: str | Path) -> None:
+        columns = [
+            "symbol", "side", "quantity", "entry_price", "exit_price",
+            "gross_pnl", "costs", "net_pnl", "exit_reason",
+        ]
+        with Path(path).open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=columns)
+            writer.writeheader()
+            for fill in self.fills:
+                row = asdict(fill)
+                row["side"] = fill.side.value
+                writer.writerow(row)
 
 
 class Backtester:

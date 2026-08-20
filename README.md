@@ -40,8 +40,12 @@ CSV input requires `symbol,timestamp,open,high,low,close` columns and accepts an
 `spread` column. Timestamps must include a UTC offset, for example `2026-08-09T12:00:00Z`.
 
 ```powershell
-python -m archon run-csv .\data\bars.csv --config .\config.example.toml
+python -m archon backtest .\data\bars.csv --config .\config.example.toml
 ```
+
+Add `--train-fraction 0.7` to produce separate chronological train and out-of-sample test
+reports. Results are written as JSON metrics/equity data and CSV trade ledgers under
+`artifacts/backtest` by default. Never tune a strategy using the test-period result.
 
 MT5 order execution is intentionally not implemented yet. Connecting the demo account comes
 after the broker, terminal installation, symbol names, and contract sizing have been confirmed.
