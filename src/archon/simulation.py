@@ -59,6 +59,20 @@ class PaperBroker:
                 exit_price, reason = order.take_profit + self.slippage, "take_profit"
         if exit_price is None:
             return None
+        return self._close(exit_price, reason)
+
+    def close_at_market(self, price: float, reason: str = "end_of_data") -> Fill | None:
+        """Close an open position conservatively at a supplied bid/ask-neutral price."""
+        order = self.position
+        if order is None:
+            return None
+        exit_price = price - self.slippage if order.side is Side.BUY else price + self.slippage
+        return self._close(exit_price, reason)
+
+    def _close(self, exit_price: float, reason: str) -> Fill:
+        order = self.position
+        if order is None:
+            raise RuntimeError("cannot close without an open position")
         direction = 1 if order.side is Side.BUY else -1
         gross = (exit_price - order.entry_price) * direction * order.quantity
         costs = order.quantity * self.commission_per_unit
@@ -77,4 +91,3 @@ class PaperBroker:
         self.fills.append(fill)
         self.position = None
         return fill
-
