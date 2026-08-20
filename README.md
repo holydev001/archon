@@ -47,5 +47,14 @@ Add `--train-fraction 0.7` to produce separate chronological train and out-of-sa
 reports. Results are written as JSON metrics/equity data and CSV trade ledgers under
 `artifacts/backtest` by default. Never tune a strategy using the test-period result.
 
+Until broker history is available, exercise the pipeline with deterministic synthetic data:
+
+```powershell
+python -m archon generate-sample .\data\synthetic.csv
+python -m archon backtest .\data\synthetic.csv --train-fraction 0.7
+```
+
+Synthetic data validates software behavior only. Its performance results are not trading evidence.
+
 MT5 order execution is intentionally not implemented yet. Connecting the demo account comes
 after the broker, terminal installation, symbol names, and contract sizing have been confirmed.
